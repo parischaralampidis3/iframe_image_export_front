@@ -1,4 +1,17 @@
 //console.log("script working");
+ let pasrsedIframeSrc = " ";
+
+let textAreaSrc = document.getElementById("src");
+let generate = document.getElementById("generateBtn");
+generate.addEventListener('click',generateButtonListener);
+
+function generateButtonListener(){
+
+}
+
+
+
+
 //parse function
 
 function parseResult(){
