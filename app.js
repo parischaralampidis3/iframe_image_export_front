@@ -1,20 +1,30 @@
-//console.log("script working");
- let pasrsedIframeSrc = " ";
+let parsedIframeSrc = " ";
 
-let textAreaSrc = document.getElementById("src");
+let textAreaSrc = document.getElementById("src").value;
 let generate = document.getElementById("generateBtn");
 generate.addEventListener('click',generateButtonListener);
 
-function generateButtonListener(){
-
+function parsedIframeFunction(){
+    let parsedIframeResult = parsedIframeSrc;
+    return parsedIframeResult;
 }
+parsedIframeFunction();
 
-
-
+function generateButtonListener(e){
+e.preventDefault();
+let src= /src="(.*?)"/;
+let textAreaSrc = document.getElementById("src").value;
+const match = textAreaSrc.match(src);
+if(match){
+parsedIframeSrc = match[1];
+}
+}
 
 //parse function
 
 function parseResult(){
+parsedIframeFunction();
+
 fetch('http://localhost:3000/capture/parse',{
     method:"POST",
     headers:{
@@ -36,6 +46,8 @@ parseResult()
 //capturePdf 
 
 function capturePdf(){
+    parsedIframeFunction();
+
     fetch('http://localhost:3000/capture/pdf',{
         method:"POST",
         headers:{
@@ -62,9 +74,10 @@ capturePdf()
 
 
 
-
-
-fetch('http://localhost:3000/capture/png',{
+function capturePng(){
+    parsedIframeFunction();
+    
+    fetch('http://localhost:3000/capture/png',{
     method:"POST",
     headers:{
         "Accept":"application/json",
@@ -85,3 +98,4 @@ fetch('http://localhost:3000/capture/png',{
     a.click()
 })
 .catch((err)=>console.log(err))
+}
