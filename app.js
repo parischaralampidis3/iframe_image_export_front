@@ -3,10 +3,6 @@ let generate = document.getElementById("generateBtn");
 
 generate.addEventListener('click', generateButtonListener);
 
-capturePdf(parsedIframeSrc)
-capturePng(parsedIframeSrc)
-
-
 function getParsedIframeSrc() {
     let textAreaSrc = document.getElementById("src").value;
     const match = textAreaSrc.match(/src="(.*?)"/);
@@ -19,6 +15,8 @@ function generateButtonListener(e) {
     if (parsed) {
         parsedIframeSrc = parsed;
         parseResult(parsedIframeSrc);
+        capturePdf(parsedIframeSrc)
+        capturePng(parsedIframeSrc)
     } else {
         alert('invalid iframe src');
     }
@@ -64,7 +62,7 @@ function capturePdf(url) {
         .catch((err) => console.error(err))
 }
 
-function capturePng() {
+function capturePng(url) {
     fetch('http://localhost:3000/capture/png', {
         method: "POST",
         headers: {
