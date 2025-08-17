@@ -21,7 +21,8 @@ function generateButtonListener(e) {
         alert('invalid iframe src');
     }
 }
-
+//I need a functionality to display the generated result at the frontend
+//I need a functionality to copy the generated code without copy/paste manually
 function parseResult(url) {
     fetch('http://localhost:3000/capture/parse', {
         method: "POST",
