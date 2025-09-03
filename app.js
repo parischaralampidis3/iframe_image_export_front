@@ -103,6 +103,10 @@ function capturePng(url) {
             })
 }
 
-// show
+// show generated result at the front text container
+
+    function showGeneratedResult(){
+        
+    }
 
 
