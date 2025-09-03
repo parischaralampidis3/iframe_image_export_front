@@ -13,8 +13,8 @@ function getParsedIframeSrc() {
 }
 
 function clearButtonListener(e){
-e.preventDefault();
-form.reset();
+    e.preventDefault();
+    form.reset();
 }
 
 function generateButtonListener(e) {
@@ -91,4 +91,8 @@ function capturePng(url) {
             a.click()
         })
         .catch((err) => console.log(err))
+}
+
+function generatedResult(){
+    
 }

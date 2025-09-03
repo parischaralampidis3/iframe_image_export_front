@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iframe image export</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <div >
+    <div>
         <h1>Iframe parser</h1>
         <form class="container" id="iframeform" action="/">
-            <textarea class="textAreaContainer" id="src" name="src" name="src"></textarea>
-            
-        <br>
-            <input id="generateBtn" value="generate">
-            <!--Need to add a clear button for iframe input-->
-        <br>
-            <input id="clearBtn" value="clear">
-        </form>
+            <div>
+                <textarea class="textAreaContainer" id="src" name="src"></textarea>
+                <br>
+                <input id="generateBtn" value="generate">
+                <br>
+                <input id="clearBtn" value="clear">
+            </div>
+            <div>
+
+            </div>
+
             <!--Need to add a field result with the generated code in order to access-->
-            <!--I need to access a copy icon to trigger generated code-->
+            <div>
+                <textarea class="textAreaContainer" id="output" name="output"></textarea>
+                <br>
+                <input id="copyBtn" value="copy">
+            </div>
+
+        </form>
         
+        <!--I need to access a copy icon to trigger generated code-->
+
     </div>
 </body>
 <script src="../app.js"></script>
+
 </html>
