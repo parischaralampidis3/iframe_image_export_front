@@ -1,12 +1,20 @@
 let parsedIframeSrc = " ";
 let generate = document.getElementById("generateBtn");
+let form = document.getElementById("iframeform");
+let clear = document.getElementById("clearBtn");
 
 generate.addEventListener('click', generateButtonListener);
+clear.addEventListener('click', clearButtonListener);
 
 function getParsedIframeSrc() {
     let textAreaSrc = document.getElementById("src").value;
     const match = textAreaSrc.match(/src="(.*?)"/);
     return match ? match[1] : null;
+}
+
+function clearButtonListener(e){
+e.preventDefault();
+form.reset();
 }
 
 function generateButtonListener(e) {
