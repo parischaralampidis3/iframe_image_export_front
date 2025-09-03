@@ -12,7 +12,7 @@ function getParsedIframeSrc() {
     return match ? match[1] : null;
 }
 
-function clearButtonListener(e){
+function clearButtonListener(e) {
     e.preventDefault();
     form.reset();
 }
@@ -56,7 +56,7 @@ function capturePdf(url) {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({url})
+        body: JSON.stringify({ url })
     })
         .then((response) => {
             return response.blob();
@@ -78,7 +78,7 @@ function capturePng(url) {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({url})
+        body: JSON.stringify({ url })
     })
         .then((response) => {
             return response.blob();
@@ -93,12 +93,16 @@ function capturePng(url) {
         .catch((err) => console.log(err))
 }
 //I need a functionality to display the generated result at the frontend
-function generatedResult(){
- fetch('http://localhost:3000/capture/parsedIframe')
- .then((response) =>{
-    return response.json();
- })
- .catch((err)=>{
-    console.log(err);
- })
+    function generatedResult() {
+        fetch('http://localhost:3000/capture/parsedIframe')
+            .then((response) => {
+                return response.json();
+            })
+        .catch((err) => {
+                console.log(err);
+            })
 }
+
+// show
+
+
