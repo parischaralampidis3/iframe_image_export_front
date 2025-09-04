@@ -4,6 +4,7 @@ let generate = document.getElementById("generateBtn");
 let getResult = document.getElementById("getResultBtn");
 let form = document.getElementById("iframeform");
 let clear = document.getElementById("clearBtn");
+let copy = document.getElementById("copyBtn");
 
 
 generate.addEventListener('click', generateButtonListener);
@@ -129,4 +130,16 @@ function getGeneratedResult() {
             console.log(err);
         })
 
+}
+
+function copyResult(){
+    let textAreaResult = document.getElementById("output");
+    textAreaResult.select();
+    textAreaResult.setSelectionRange(0,999);
+
+    navigator.clipboard.writeText(textAreaResult.value);
+    alert("text is copied at the clipboard" + textAreaResult.value);
+    console.log("text is coppied")
+
+    navigator.clipboard.readText().then(text => console.log(text));
 }

@@ -13,19 +13,18 @@ Click "Generate" Button
 | generateButtonListener()  |
 +---------------------------+
   │
-  ├─> parseResult(parsedIframeSrc)
-  │       └─ Sends POST /capture/parse
-  │           └─ Logs backend response (optional)
+  ├─ parseResult(parsedIframeSrc)
+  │       └─ POST /capture/parse
+  │           └─ logs backend parse in console
   │
-  ├─> capturePdf(parsedIframeSrc)
-  │       └─ Sends POST /capture/pdf
+  ├─ capturePdf(parsedIframeSrc)
+  │       └─ POST /capture/pdf
   │           └─ Downloads report.pdf
   │
-  └─> capturePng(parsedIframeSrc)
-          └─ Sends POST /capture/png
+  └─ capturePng(parsedIframeSrc)
+          └─ POST /capture/png
               └─ Downloads report.png
   │
-  ▼
 Click "Get Result" Button
   │
   ▼
@@ -33,19 +32,20 @@ Click "Get Result" Button
 | getGeneratedResult()      |
 +---------------------------+
   │
-  ├─ Checks that parsedIframeSrc exists
+  ├─ Checks if parsedIframeSrc exists
   │
   ├─ Sends POST /capture/parse with iframe
   │
   └─ Updates textarea (#output)
        └─ textAreaResult.value = data.code || JSON.stringify(data,null,2)
   │
-  ▼
 Click "Copy" Button
   │
   ▼
 +----------------------+
-| copyOutput()         |
+| copyResult()         |
 +----------------------+
   │
-  └─ Selects textarea content → Copies to clipboard
+  ├─ Selects textarea content
+  ├─ Copies it to clipboard
+  └─ Shows alert / console log (optional)
