@@ -124,7 +124,13 @@ function getGeneratedResult() {
             return response.json();
         })
         .then((data) => {
-            textAreaResult.value = data.code || JSON.stringify(data, null, 2);
+            textAreaResult.value = `
+            <div>
+                <iframe src=${data.url}></iframe>
+                <button>Donwload Pdf</button>
+                <button>Download Png</button>
+            </div>
+            `
         })
         .catch((err) => {
             console.log(err);
