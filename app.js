@@ -28,8 +28,6 @@ function generateButtonListener(e) {
     if (parsed) {
         parsedIframeSrc = parsed;
         parseResult(parsedIframeSrc);
-        capturePdf(parsedIframeSrc)
-        capturePng(parsedIframeSrc)
     } else {
         alert('invalid iframe src');
     }
@@ -127,8 +125,8 @@ function getGeneratedResult() {
             textAreaResult.value = `
             <div>
                 <iframe src=${data.url}></iframe>
-                <button>Donwload Pdf</button>
-                <button>Download Png</button>
+                <a href=${"http://localhost:3000/capture/getPdf?url=ENCONDED_URL"}>Donwload Pdf</a>
+                <a href="${"http://localhost:3000/capture/getPng?url=ENCONDED_URL"}">Download Png</a>
             </div>
             `
         })
