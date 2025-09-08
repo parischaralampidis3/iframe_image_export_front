@@ -104,7 +104,7 @@ function capturePng(url) {
 function getCurrentIframeSrc() {
     const iframe = document.querySelector("#preview iframe");
     if (iframe) {
-        return iframe.scroll;
+        return iframe.src;
     }
     return null;
 }
@@ -112,7 +112,7 @@ function getCurrentIframeSrc() {
 function updateDownloadButton() {
     const iframeSrc = getCurrentIframeSrc();
     if (!iframeSrc) return;
-    const encondedUrl = encodeURIComponent(data.url);
+    const encondedUrl = encodeURIComponent(iframeSrc);
     const pdfBtn = document.querySelector("#downloadPdf");
     const pngBtn = document.querySelector("#downloadPng");
 
@@ -143,7 +143,7 @@ function getGeneratedResult() {
 
             let textAreaResult = document.getElementById("output");
             textAreaResult.value = `
-            <div id="preview iframe">
+            <div id="preview">
                 <iframe src=${data.url}></iframe>
                 <div>
                     <a id = "downloadPdf" href=#>Donwload Pdf</a>
@@ -151,12 +151,15 @@ function getGeneratedResult() {
                 </div>
             </div>
             `
+            updateDownloadButton()
         })
         .catch((err) => {
             console.log(err);
         })
 
 }
+
+
 
 function copyResult() {
     let textAreaResult = document.getElementById("output");
