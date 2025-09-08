@@ -100,10 +100,28 @@ function capturePng(url) {
         })
         .catch((err) => console.log(err))
 }
+
+function getCurrentIframeSrc(){
+    const iframe = document.querySelector("#preview iframe");
+    if(iframe){
+        return iframe.scroll;
+    }
+    return null;
+}
+
+function updateDownloadButton(){
+    const iframeSrc = getCurrentIframeSrc();
+    if(!iframeSrc) return;
+ const encondedUrl = encodeURIComponent(data.url);
+    const pdfBtn = document.querySelector("#downloadPdf");
+    const pngBtn = document.querySelector("#downloadPng");
+
+    pdfBtn.href= `http://localhost:3000/capture/getPdf?url=${encondedUrl}`
+    pngBtn.href= `http://localhost:3000/capture/getPng?url=${encondedUrl}`
+}
 //I need a functionality to display the generated result at the frontend
 function getGeneratedResult() {
     let url = parsedIframeSrc;
-    let textAreaResult = document.getElementById("output");
     if(!url){
         alert("Please Generate an iframe first")
         return;
@@ -122,11 +140,15 @@ function getGeneratedResult() {
             return response.json();
         })
         .then((data) => {
+           
+            let textAreaResult = document.getElementById("output");
             textAreaResult.value = `
-            <div>
+            <div id="preview iframe">
                 <iframe src=${data.url}></iframe>
-                <a href=${"http://localhost:3000/capture/getPdf?url=ENCONDED_URL"}>Donwload Pdf</a>
-                <a href="${"http://localhost:3000/capture/getPng?url=ENCONDED_URL"}">Download Png</a>
+                <div>
+                    <a id = "downloadPdf" href=#>Donwload Pdf</a>
+                    <a id = "downloadPng" href=#">Download Png</a>
+                </div>
             </div>
             `
         })
