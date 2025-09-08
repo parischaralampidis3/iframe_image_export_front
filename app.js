@@ -101,28 +101,10 @@ function capturePng(url) {
         .catch((err) => console.log(err))
 }
 
-function getCurrentIframeSrc() {
-    const iframe = document.querySelector("#preview iframe");
-    if (iframe) {
-        return iframe.src;
-    }
-    return null;
-}
-
-function updateDownloadButton() {
-    const iframeSrc = getCurrentIframeSrc();
-    if (!iframeSrc) return;
-    const encondedUrl = encodeURIComponent(iframeSrc);
-    const pdfBtn = document.querySelector("#downloadPdf");
-    const pngBtn = document.querySelector("#downloadPng");
-
-    pdfBtn.href = `http://localhost:3000/capture/getPdf?url=${encondedUrl}`
-    pngBtn.href = `http://localhost:3000/capture/getPng?url=${encondedUrl}`
-}
 //I need a functionality to display the generated result at the frontend
 function getGeneratedResult() {
     let url = parsedIframeSrc;
-    if (!url) {
+    if(!url){
         alert("Please Generate an iframe first")
         return;
     }
@@ -140,18 +122,15 @@ function getGeneratedResult() {
             return response.json();
         })
         .then((data) => {
-
+            const encondedUrl = encodeURIComponent(data.url);
             let textAreaResult = document.getElementById("output");
             textAreaResult.value = `
-            <div id="preview">
+            <div id="preview iframe">
                 <iframe src=${data.url}></iframe>
-                <div>
-                    <a id = "downloadPdf" href=#>Donwload Pdf</a>
-                    <a id = "downloadPng" href=#">Download Png</a>
-                </div>
+                <a href=http://localhost:3000/capture/getPdf?url=${encondedUrl}>Donwload Pdf</a>
+                <a href="http://localhost:3000/capture/getPng?url=${encondedUrl}">Download Png</a>
             </div>
             `
-            updateDownloadButton()
         })
         .catch((err) => {
             console.log(err);
@@ -159,12 +138,10 @@ function getGeneratedResult() {
 
 }
 
-
-
-function copyResult() {
+function copyResult(){
     let textAreaResult = document.getElementById("output");
     textAreaResult.select();
-    textAreaResult.setSelectionRange(0, 999);
+    textAreaResult.setSelectionRange(0,999);
 
     navigator.clipboard.writeText(textAreaResult.value);
     alert("text is copied at the clipboard" + textAreaResult.value);
