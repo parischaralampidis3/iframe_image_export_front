@@ -1,17 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI Real-time Snapshot</title>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 80px; margin-bottom: 10px; }
+    button { margin-right: 10px; margin-top: 5px; padding: 5px 10px; }
+    #output { height: 200px; }
+    #preview-container { border: 1px solid #ccc; width: 800px; height: 450px; margin-top: 10px; position: relative; }
+</style>
 </head>
 <body>
-    
-    
-            <div id="preview iframe">
-                <iframe src=https://app.powerbi.com/view?r=eyJrIjoiYzRmYmFhNjMtOTlkNi00Yjk5LTg0M2EtNGI5NjJiYjA5ZmY3IiwidCI6IjU4OTJhYWZmLTBhYTUtNGQ5YS1iNzUxLTU0NzEzZTFkMDUzYSIsImMiOjl9></iframe>
-                <a href=http://localhost:3000/capture/getPdf?url=https%3A%2F%2Fapp.powerbi.com%2Fview%3Fr%3DeyJrIjoiYzRmYmFhNjMtOTlkNi00Yjk5LTg0M2EtNGI5NjJiYjA5ZmY3IiwidCI6IjU4OTJhYWZmLTBhYTUtNGQ5YS1iNzUxLTU0NzEzZTFkMDUzYSIsImMiOjl9>Donwload Pdf</a>
-                <a href="http://localhost:3000/capture/getPng?url=https%3A%2F%2Fapp.powerbi.com%2Fview%3Fr%3DeyJrIjoiYzRmYmFhNjMtOTlkNi00Yjk5LTg0M2EtNGI5NjJiYjA5ZmY3IiwidCI6IjU4OTJhYWZmLTBhYTUtNGQ5YS1iNzUxLTU0NzEzZTFkMDUzYSIsImMiOjl9">Download Png</a>
-            </div>
+
+<h1>Power BI Real-time Snapshot Generator</h1>
+
+<form id="iframeform">
+    <label for="src">Paste your Power BI Public Embed URL here:</label>
+    <textarea id="src" name="src"></textarea><br>
+    <button id="generateBtn">Generate</button>
+    <button id="clearBtn" type="button">Clear</button>
+</form>
+
+<h3>Generated Code & Preview:</h3>
+<textarea id="output"></textarea><br>
+
+<button id="getResultBtn">Get Result</button>
+<button id="copyBtn">Copy Code</button>
+
+<div id="preview-container"></div>
+<button id="downloadSnapshotBtn">Download Snapshot (PDF)</button>
+
+<!-- Power BI JS SDK -->
+<script src="https://aka.ms/powerbi-client"></script>
+
+<script>
+let embedUrl = "";
+let report; // Power BI report instance
+
+const generate = document.getElementById("generateBtn");
+const getResult = document.getElementById("getResultBtn");
+const clear = document.getElementById("clearBtn");
+const copy = document.getElementById("copyBtn");
+const previewContainer = document.getElementById("preview-container");
+const downloadSnapshotBtn = document.getElementById("downloadSnapshotBtn");
+const textAreaOutput = document.getElementById("output");
+
+generate.addEventListener('click', generateButtonListener);
+getResult.addEventListener('click', getResultButtonListener);
+clear.addEventListener('click', clearButtonListener);
+copy.addEventListener('click', copyResult);
+downloadSnapshotBtn.addEventListener('click', downloadSnapshot);
+
+function generateButtonListener(e) {
+    e.preventDefault();
+    const url = document.getElementById("src").value.trim();
+    if (!url) {
+        alert("Please paste a valid Power BI embed URL.");
+        return;
+    }
+    embedUrl = url;
+    alert("Embed URL parsed successfully!");
+}
+
+function clearButtonListener(e) {
+    e.preventDefault();
+    document.getElementById("src").value = "";
+    textAreaOutput.value = "";
+    previewContainer.innerHTML = "";
+    embedUrl = "";
+    report = null;
+}
+
+function getResultButtonListener(e) {
+    e.preventDefault();
+    if (!embedUrl) {
+        alert("Please generate an embed URL first.");
+        return;
+    }
+
+    // Remove any existing report
+    previewContainer.innerHTML = "";
+
+    // Power BI embed configuration
+    const config = {
+        type: 'report',
+        embedUrl: embedUrl,
+        tokenType: window['powerbi-client'].models.TokenType.None, // public reports do not need token
+        settings: {
+            panes: {
+                filters: { visible: false },
+                pageNavigation: { visible: true }
+            },
+            background: window['powerbi-client'].models.BackgroundType.Transparent
+        }
+    };
+
+    report = powerbi.embed(previewContainer, config);
+
+    // Generate self-contained code block
+    textAreaOutput.value = `
+<div id="preview-container" style="border:1px solid #ccc; width:800px; height:450px;"></div>
+<button id="downloadSnapshotBtn">Download Snapshot (PDF)</button>
+
+<script src="https://aka.ms/powerbi-client"></script>
+<script>
+const embedUrl = "${embedUrl}";
+const container = document.getElementById("preview-container");
+const config = {
+    type: 'report',
+    embedUrl: embedUrl,
+    tokenType: window['powerbi-client'].models.TokenType.None,
+    settings: {
+        panes: { filters: { visible: false }, pageNavigation: { visible: true } },
+        background: window['powerbi-client'].models.BackgroundType.Transparent
+    }
+};
+const report = powerbi.embed(container, config);
+
+document.getElementById("downloadSnapshotBtn").addEventListener("click", async () => {
+    try {
+        const pdfBlob = await report.exportReport();
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "PowerBI_Report.pdf";
+        a.click();
+    } catch(err) {
+        console.error(err);
+        alert("Snapshot failed. Make sure the report is public.");
+    }
+});
+<\/script>
+    `;
+}
+
+function copyResult() {
+    textAreaOutput.select();
+    navigator.clipboard.writeText(textAreaOutput.value)
+        .then(() => alert("Code copied to clipboard!"))
+        .catch(err => console.error("Copy failed", err));
+}
+
+async function downloadSnapshot() {
+    if (!report) {
+        alert("Please generate and preview the report first.");
+        return;
+    }
+
+    try {
+        const pdfBlob = await report.exportReport();
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "PowerBI_Report.pdf";
+        a.click();
+    } catch(err) {
+        console.error(err);
+        alert("Snapshot failed. Make sure the report is public.");
+    }
+}
+</script>
+
 </body>
 </html>
