@@ -38,9 +38,12 @@ function getResultButtonListener(e) {
     return getGeneratedResult();
 }
 
+const API_BASE = "https://iframe-image-export-back.onrender.com";
+
+
 //I need a functionality to copy the generated code without copy/paste manually
 function parseResult(url) {
-    fetch('http://localhost:3000/capture/parse', {
+    fetch(`${API_BASE}/capture/parse`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -58,7 +61,7 @@ function parseResult(url) {
 }
 
 function capturePdf(url) {
-    fetch('http://localhost:3000/capture/pdf', {
+    fetch(`${API_BASE}/capture/pdf`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -80,7 +83,7 @@ function capturePdf(url) {
 }
 
 function capturePng(url) {
-    fetch('http://localhost:3000/capture/png', {
+    fetch(`${API_BASE}/capture/png`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -108,7 +111,7 @@ function getGeneratedResult() {
         alert("Please Generate an iframe first")
         return;
     }
-    fetch("http://localhost:3000/capture/parse", {
+    fetch(`${API_BASE}/capture/parse`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
