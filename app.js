@@ -126,7 +126,7 @@ function getGeneratedResult() {
         })
         .then((data) => {
             const API_BASE = "https://iframe-image-export-back.onrender.com";
-     encondedUrl = encodeURIComponent(data.url);
+            const encodedUrl = encodeURIComponent(data.url);
             let textAreaResult = document.getElementById("output");
             textAreaResult.value = `
             <div id="preview iframe">
