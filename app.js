@@ -126,13 +126,13 @@ function getGeneratedResult() {
         })
         .then((data) => {
             const API_BASE = "https://iframe-image-export-back.onrender.com";
-            const encodedUrl = encodeURIComponent(data.url);
+            const encondedUrl = encodeURIComponent(data.url);
             let textAreaResult = document.getElementById("output");
             textAreaResult.value = `
             <div id="preview iframe">
                 <iframe src=${data.url}></iframe>
-               <a href="${API_BASE}/capture/getPdf?url=${encodedUrl}" target="_blank">Download PDF</a>
-            <a href="${API_BASE}/capture/getPng?url=${encodedUrl}" target="_blank">Download PNG</a>
+               <a href="${API_BASE}/capture/getPdf?url=${encondedUrl}" target="_blank">Download PDF</a>
+            <a href="${API_BASE}/capture/getPng?url=${encondedUrl}" target="_blank">Download PNG</a>
             </div>
             `
         })
